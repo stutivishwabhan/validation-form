@@ -7,7 +7,7 @@ import CountrySelectInput from './CountrySelectInput';
 import StateSelectInput from './StateSelectInput';
 import DateInput from './DateInput';
 import SubmitButton from './SubmitButton';
-import { checkIsFieldValid } from '../helpers';
+import { badCheckIsFieldValid } from '../helpers';
 
 const initialFormValues = {
     firstName: '', 
@@ -49,11 +49,16 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
+  const initialState = {
+      responseToPost: '', 
+  }
+
 
 const ValidationForm = () => {
     const [values, setValues] = useState(initialFormValues); 
     const [errors, setErrors] = useState({}); 
     const classes = useStyles(); 
+    const [state, setState] = useState(initialState); 
 
     /**
      * Checks if all form fields have valid entries
@@ -64,7 +69,7 @@ const ValidationForm = () => {
     const areFieldsValid = (fieldValues = values) => {
         let validationState = {}; 
         Object.keys(fieldValues).map((field) => (
-            validationState[field] = checkIsFieldValid(field, fieldValues[field])
+            validationState[field] = badCheckIsFieldValid(field, fieldValues[field])
         ))
         setErrors({...validationState}); 
         return Object.values(validationState).every(i => i === "");
@@ -74,11 +79,19 @@ const ValidationForm = () => {
      * Alerts the user if all fields are valid
      * @param {*} e 
      */
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); 
-        if (areFieldsValid()) {
-            alert('all fields valid');
-        }
+        const validPost = areFieldsValid(); 
+        const response = await fetch('/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ validPost: validPost, post: values }),
+          });
+        const body = await response.text();
+        
+        setState({ ...state, responseToPost: body });
     }
 
     /**
@@ -94,6 +107,7 @@ const ValidationForm = () => {
     }
 
     return (
+    <>
     <form className={classes.root} onSubmit={handleSubmit} autoComplete="off">
     <Grid container spacing={2}>
         <Grid item xs={12}> <h3>Welcome!</h3> </Grid>
@@ -216,6 +230,8 @@ const ValidationForm = () => {
         </Grid>
     </Grid>
     </form>
+    <p style={{textAlign: 'center', color: state.responseToPost === 'Successfully submitted!' ? 'green' : 'red'}}>{state.responseToPost}</p>
+    </>
 )
 }
 

@@ -115,3 +115,49 @@ export const checkIsFieldValid = (field, fieldValue) => {
         return ""; 
     }
 }
+
+
+
+const badEmailRegex = /.+@.+/; 
+
+/**
+ * Only checks if there's an @ in the middle of characters
+ * @param {} email 
+ * @returns 
+ */
+const badCheckIsValidEmail = (email) => {
+    if (!badEmailRegex.test(email)) {
+        return "Email is invalid"; 
+    } 
+    return ""; 
+}
+
+/**
+ * Only checks against phone number length, not the syntax 
+ * @param {*} phoneNumber 
+ * @returns 
+ */
+const badCheckIsValidUsPhoneNumber = (phoneNumber) => {
+    if (phoneNumber.length < usPhoneNumberMinLength) {
+        return "Phone number must be at least 10 digits"; 
+    } 
+    return ""; 
+}
+
+/**
+ * For QA Interview
+ * @param {*} field 
+ * @param {*} fieldValue 
+ * @returns 
+ */
+export const badCheckIsFieldValid = (field, fieldValue) => {
+    if (requiredFields.has(field) && !(fieldValue && fieldValue.length !== 0)) {
+        return "This field is required"; 
+    } else if (field === 'emailAddress') {
+        return badCheckIsValidEmail(fieldValue); 
+    } else if (field === 'phoneNumber') {
+        return badCheckIsValidUsPhoneNumber(fieldValue); 
+    } else {
+        return ""; 
+    }
+}
