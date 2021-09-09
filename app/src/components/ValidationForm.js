@@ -1,13 +1,32 @@
-import React from 'react'; 
-import { TextField, Grid, RadioGroup, Radio, FormControlLabel, FormControl, FormLabel, Button } from '@material-ui/core';
+import React, { useState, useEffect } from 'react'; 
+import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import CountrySelect from './CountrySelect';
+import TextInput from './TextInput';
+import RadioInput from './RadioInput';
+import CountrySelectInput from './CountrySelectInput';
+import StateSelectInput from './StateSelectInput';
+import DateInput from './DateInput';
+import SubmitButton from './SubmitButton';
 
-const OutlinedTextField = (props) => {
-    return (
-      <TextField id="outlined-basic" variant="outlined" label={props.label} className={props.style}/>
-    )
+const initialFormValues = {
+    firstName: '', 
+    lastName: '', 
+    emailAddress: '', 
+    streetAddress: '', 
+    city: '', 
+    state: '',
+    country: '', 
+    zip: '', 
+    phoneNumber: '', 
+    dateOfBirth: new Date(), 
+    gender: 'male'
 }
+
+const genderOptions = [
+    {value: 'male', label: 'Male'}, 
+    {value: 'female', label: 'Female'}, 
+    {value: 'other', label: 'Other'}
+]
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,53 +42,120 @@ const useStyles = makeStyles((theme) => ({
     }, 
     padRight: {
         marginRight: '10px',
+    }, 
+    longTextField: {
+        width: '400px',
     }
   }));
 
+const handleSubmit = () => {
+
+}
+
 const ValidationForm = () => {
+    const [values, setValues] = useState(initialFormValues); 
     const classes = useStyles(); 
 
+    const handleInputChange = (e) => {
+        const {name, value} = e.target; 
+        setValues({
+            ...values,
+            [name]: value
+        });
+    }
+
     return (
-    <Grid container spacing={2} className={classes.root}>
+    <form className={classes.root} onSubmit={handleSubmit} autoComplete="off">
+    <Grid container spacing={2}>
         <Grid item xs={12}> <h3>Welcome!</h3> </Grid>
         <Grid item xs={12} className={classes.multipleItems}>
-            <OutlinedTextField label="First Name" style={classes.padRight}/>
-            <OutlinedTextField label="Last Name" style={classes.padLeft}/>
+            <TextInput 
+                label="First Name" 
+                name="firstName"
+                value={values.firstName}
+                style={classes.padRight} 
+                onChange={handleInputChange}
+            />
+            <TextInput 
+                label="Last Name" 
+                name="lastName"
+                value={values.lastName}
+                onChange={handleInputChange}
+            />
         </Grid>
         <Grid item xs={12}>
-            <OutlinedTextField label="Email Address"/>
+            <TextInput 
+                label="Email Address"
+                name="emailAddress"
+                value={values.emailAddress}
+                onChange={handleInputChange}
+                style={classes.longTextField}
+            />
         </Grid>
         <Grid item xs={12}>
-            <OutlinedTextField label="Street Address"/>
+            <TextInput 
+                label="Street Address"
+                name="streetAddress"
+                value={values.streetAddress}
+                onChange={handleInputChange}
+                style={classes.longTextField}
+            />
         </Grid>
         <Grid item xs={12} className={classes.multipleItems}>
-            <OutlinedTextField label="City" style={classes.padRight}/>
-            <CountrySelect style={classes.padLeft}/>
+            <TextInput 
+                label="City" 
+                name="city"
+                value={values.city}
+                style={classes.padRight}
+                onChange={handleInputChange}
+            />
+            <StateSelectInput />
         </Grid>
         <Grid item xs={12} className={classes.multipleItems}>
-            <CountrySelect style={classes.padRight}/>
-            <OutlinedTextField label="Zip/Postal" style={classes.padLeft}/>
+            <CountrySelectInput />
+            <TextInput 
+                label="Zip/Postal" 
+                name="zip"
+                value={values.zip}
+                style={classes.padLeft}
+                onChange={handleInputChange}
+            />
         </Grid>
         <Grid item xs={12}>
-            <OutlinedTextField label="Phone Number"/>
+            <TextInput 
+                label="Phone Number"
+                name="phoneNumber"
+                value={values.phoneNumber}
+                onChange={handleInputChange}
+            />
         </Grid>
         <Grid item xs={12}>
-            <OutlinedTextField label="Date of Birth"/>
+            <DateInput 
+                label="Date of Birth"
+                name="dateOfBirth"
+                value={values.dateOfBirth}
+                onChange={handleInputChange}
+            />
         </Grid>
         <Grid item xs={12}>
-            <FormControl component="fieldset">
-                <FormLabel component="legend">Gender</FormLabel>
-                <RadioGroup aria-label="gender" name="gender1">
-                    <FormControlLabel value="female" control={<Radio />} label="Female" />
-                    <FormControlLabel value="male" control={<Radio />} label="Male" />
-                    <FormControlLabel value="other" control={<Radio />} label="Other" />
-                </RadioGroup>
-            </FormControl>
+            <RadioInput 
+                name="gender"
+                value={values.gender}
+                onChange={handleInputChange}
+                options={genderOptions}
+            />
         </Grid>
         <Grid item xs={12}>
-            <Button variant="outlined">Get my free samples</Button>
+            <SubmitButton 
+                variant="outlined"
+                size="medium"
+                color="primary"
+                text="Get my free samples"
+                type="submit"
+            />
         </Grid>
     </Grid>
+    </form>
 )
 }
 
