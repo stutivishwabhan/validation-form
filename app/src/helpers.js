@@ -17,11 +17,11 @@ export const convertEventParameter = (name, value) => ({
 })
 
 /*
-Emails are a collection of nearly any series of characters
-followed by an @
-another series of characters
-followed by a .
-another series of characters 
+    Emails are a collection of nearly any series of characters
+    followed by an @
+    another series of characters
+    followed by a .
+    another series of characters 
 */
 const emailRegex = /.+@.+\..+/;
 
@@ -57,14 +57,11 @@ const requiredFields = new Set([
     'dateOfBirth'
 ])
 
-// export const checkIfFieldHasValue = (field, fieldValue) => {
-//     if (requiredFields.has(field) && fieldValue && fieldValue.length !== 0) {
-//         return ""; 
-//     } else {
-//         return "This field is required"; 
-//     }
-// }
-
+/**
+ * Tests email against regex
+ * @param {*} email 
+ * @returns string
+ */
 const checkIsValidEmail = (email) => {
     if (!emailRegex.test(email)) {
         return "Email is invalid"; 
@@ -72,6 +69,11 @@ const checkIsValidEmail = (email) => {
     return ""; 
 }
 
+/**
+ * Tests zip against regex
+ * @param {*} zip 
+ * @returns string
+ */
 const checkIsValidUsZip = (zip) => {
     if (!usZipRegex.test(zip)) {
         return "Zip code is invalid"; 
@@ -79,6 +81,11 @@ const checkIsValidUsZip = (zip) => {
     return ""; 
 }
 
+/**
+ * Tests phoneNumber against length requirement and regex
+ * @param {*} phoneNumber 
+ * @returns string
+ */
 const checkIsValidUsPhoneNumber = (phoneNumber) => {
     if (phoneNumber.length < usPhoneNumberMinLength) {
         return "Phone number must be at least 10 digits"; 
@@ -88,6 +95,13 @@ const checkIsValidUsPhoneNumber = (phoneNumber) => {
     return ""; 
 }
 
+/**
+ * Tests if fields are valid by checking against required ones
+ * and against individual field functions
+ * @param {*} field 
+ * @param {*} fieldValue 
+ * @returns string
+ */
 export const checkIsFieldValid = (field, fieldValue) => {
     if (requiredFields.has(field) && !(fieldValue && fieldValue.length !== 0)) {
         return "This field is required"; 

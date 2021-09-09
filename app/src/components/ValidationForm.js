@@ -55,6 +55,12 @@ const ValidationForm = () => {
     const [errors, setErrors] = useState({}); 
     const classes = useStyles(); 
 
+    /**
+     * Checks if all form fields have valid entries
+     * Stores map (key=field, value=error message) in errors
+     * @param {*} fieldValues 
+     * @returns boolean 
+     */
     const areFieldsValid = (fieldValues = values) => {
         let validationState = {}; 
         Object.keys(fieldValues).map((field) => (
@@ -64,6 +70,10 @@ const ValidationForm = () => {
         return Object.values(validationState).every(i => i === "");
     }
 
+    /**
+     * Alerts the user if all fields are valid
+     * @param {*} e 
+     */
     const handleSubmit = (e) => {
         e.preventDefault(); 
         if (areFieldsValid()) {
@@ -71,6 +81,10 @@ const ValidationForm = () => {
         }
     }
 
+    /**
+     * Updates the field to its new value
+     * @param {*} e 
+     */
     const handleInputChange = (e) => {
         const {name, value} = e.target; 
         setValues({
@@ -84,6 +98,7 @@ const ValidationForm = () => {
     <Grid container spacing={2}>
         <Grid item xs={12}> <h3>Welcome!</h3> </Grid>
         <Grid item xs={12} className={classes.multipleItems}>
+            {/* First Name Text Field */}
             <TextInput 
                 label="First Name" 
                 name="firstName"
@@ -92,6 +107,7 @@ const ValidationForm = () => {
                 onChange={handleInputChange}
                 error={errors.firstName}
             />
+            {/* Last Name Text Field */}
             <TextInput 
                 label="Last Name" 
                 name="lastName"
@@ -101,6 +117,7 @@ const ValidationForm = () => {
             />
         </Grid>
         <Grid item xs={12}>
+            {/* Email Address Text Field */}
             <TextInput 
                 label="Email Address"
                 name="emailAddress"
@@ -111,6 +128,7 @@ const ValidationForm = () => {
             />
         </Grid>
         <Grid item xs={12}>
+            {/* Street Address Text Field */}
             <TextInput 
                 label="Street Address"
                 name="streetAddress"
@@ -121,6 +139,7 @@ const ValidationForm = () => {
             />
         </Grid>
         <Grid item xs={12} className={classes.multipleItems}>
+            {/* City Text Field */}
             <TextInput 
                 label="City" 
                 name="city"
@@ -129,6 +148,7 @@ const ValidationForm = () => {
                 onChange={handleInputChange}
                 error={errors.city}
             />
+            {/* State Dropdown */}
             <StateSelectInput 
                 name="state"
                 value={values.state}
@@ -137,12 +157,14 @@ const ValidationForm = () => {
             />
         </Grid>
         <Grid item xs={12} className={classes.multipleItems}>
+            {/* Country Dropdown */}
             <CountrySelectInput 
                 name="country"
                 value={values.country}
                 onChange={handleInputChange}
                 error={errors.country}
             />
+            {/* Zip Code Text Field */}
             <TextInput 
                 label="Zip/Postal" 
                 name="zip"
@@ -153,6 +175,7 @@ const ValidationForm = () => {
             />
         </Grid>
         <Grid item xs={12}>
+            {/* Phone Number Text Field */}
             <TextInput 
                 label="Phone Number"
                 name="phoneNumber"
@@ -162,6 +185,7 @@ const ValidationForm = () => {
             />
         </Grid>
         <Grid item xs={12}>
+            {/* Date Picker */}
             <DateInput 
                 label="Date of Birth"
                 name="dateOfBirth"
@@ -171,6 +195,7 @@ const ValidationForm = () => {
             />
         </Grid>
         <Grid item xs={12}>
+            {/* Gender Single Choice */}
             <RadioInput 
                 label="Gender"
                 name="gender"
@@ -180,6 +205,7 @@ const ValidationForm = () => {
             />
         </Grid>
         <Grid item xs={12}>
+            {/* Submit Button */}
             <SubmitButton 
                 variant="outlined"
                 size="medium"
