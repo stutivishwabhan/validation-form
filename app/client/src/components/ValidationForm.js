@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'; 
+import { useState } from 'react'; 
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextInput from './TextInput';
@@ -7,7 +7,7 @@ import CountrySelectInput from './CountrySelectInput';
 import StateSelectInput from './StateSelectInput';
 import DateInput from './DateInput';
 import SubmitButton from './SubmitButton';
-import { checkIsFieldValid } from '../helpers';
+import { badCheckIsFieldValid } from '../helpers';
 
 const initialFormValues = {
     firstName: '', 
@@ -50,8 +50,6 @@ const useStyles = makeStyles((theme) => ({
   }));
 
   const initialState = {
-      response: '', 
-      post: '', 
       responseToPost: '', 
   }
 
@@ -60,21 +58,7 @@ const ValidationForm = () => {
     const [values, setValues] = useState(initialFormValues); 
     const [errors, setErrors] = useState({}); 
     const classes = useStyles(); 
-
     const [state, setState] = useState(initialState); 
-
-    // useEffect(() => {
-    //     callApi().then(res => setState({...state, responseToPost: res.express}))
-    //              .catch(err => console.log(err));
-    // })
-
-    // const callApi = async () => {
-    //     const response = await fetch('/api/hello');
-    //     const body = await response.json();
-    //     if (response.status !== 200) throw Error(body.message);
-        
-    //     return body;
-    //   };
 
     /**
      * Checks if all form fields have valid entries
@@ -85,7 +69,7 @@ const ValidationForm = () => {
     const areFieldsValid = (fieldValues = values) => {
         let validationState = {}; 
         Object.keys(fieldValues).map((field) => (
-            validationState[field] = checkIsFieldValid(field, fieldValues[field])
+            validationState[field] = badCheckIsFieldValid(field, fieldValues[field])
         ))
         setErrors({...validationState}); 
         return Object.values(validationState).every(i => i === "");
@@ -124,7 +108,6 @@ const ValidationForm = () => {
 
     return (
     <>
-    {/* <p>{state.response}</p> */}
     <form className={classes.root} onSubmit={handleSubmit} autoComplete="off">
     <Grid container spacing={2}>
         <Grid item xs={12}> <h3>Welcome!</h3> </Grid>
