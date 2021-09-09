@@ -1,14 +1,8 @@
 import { TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import React from 'react'
-// import SelectInput from './SelectInput'
+import { convertEventParameter } from '../utils';
 import { stateOptions } from './States'
-
-const convertEventParameter = (name, value) => ({
-    target: {
-        name, value
-    }
-})
 
 export default function StateSelectInput(props) {
     const {name, value, onChange} = props; 

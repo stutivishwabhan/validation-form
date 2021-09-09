@@ -1,8 +1,9 @@
 import { makeStyles, TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab';
 import React from 'react'
+import { convertEventParameter } from '../utils';
 import { countryOptions, countryToFlag } from './Countries'
-// import SelectInput from './SelectInput'
+
 
 const countryUseStyles = makeStyles({
     option: {
@@ -13,12 +14,6 @@ const countryUseStyles = makeStyles({
         },
     },
 });
-
-const convertEventParameter = (name, value) => ({
-    target: {
-        name, value
-    }
-})
 
 export default function CountrySelectInput(props) {
     const {name, value, onChange, error} = props; 
