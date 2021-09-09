@@ -1,7 +1,8 @@
 import { makeStyles, TextField } from '@material-ui/core'
+import { Autocomplete } from '@material-ui/lab';
 import React from 'react'
 import { countryOptions, countryToFlag } from './Countries'
-import SelectInput from './SelectInput'
+// import SelectInput from './SelectInput'
 
 const countryUseStyles = makeStyles({
     option: {
@@ -13,27 +14,40 @@ const countryUseStyles = makeStyles({
     },
 });
 
+const convertEventParameter = (name, value) => ({
+    target: {
+        name, value
+    }
+})
+
 export default function CountrySelectInput(props) {
+    const {name, value, onChange, error} = props; 
     const countryClasses = countryUseStyles(); 
     return (
-        <SelectInput
-                options={countryOptions}
-                getOptionLabel={(option) => option.label}
-                renderOption={(option) => 
-                    <React.Fragment>
-                        <span>{countryToFlag(option.code)}</span>
-                        {option.label} ({option.code})
-                    </React.Fragment>
-                }
-                renderInput={(params) => 
-                    <TextField
-                        {...params}
-                        label="Choose a country/region"
-                        variant="outlined"
-                    />
-                }
-                style={{ width: 300 }}
-                classes={{option: countryClasses.option}}
+        <Autocomplete
+            style={{width: 300}}
+            options={countryOptions}
+            classes={{option: countryClasses.option}}
+            autoHighlight
+            getOptionSelected={(option, value) => option.label === value.label}
+            getOptionLabel={(option) => option.label || ""}
+            renderOption={(option) => 
+                <React.Fragment>
+                    <span>{countryToFlag(option.code)}</span>
+                    {option.label} ({option.code})
+                </React.Fragment>}
+            renderInput={(params) => 
+                <TextField
+                    {...params}
+                    label="Choose a country/region"
+                    variant="outlined"
+                    {...(error) && {error: true, helperText: error}}
+                    inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                />}
+            onChange={(e, v) => onChange(convertEventParameter(name, v ? v.label: ''))}
         />
     )
 }

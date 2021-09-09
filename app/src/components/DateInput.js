@@ -9,7 +9,7 @@ const convertEventParameter = (name, value) => ({
 })
 
 export default function DateInput(props) {
-    const {label, name, value, onChange} = props; 
+    const {label, name, value, onChange, error} = props; 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker disableToolbar 
@@ -17,10 +17,10 @@ export default function DateInput(props) {
                 inputVariant="outlined" 
                 label={label}
                 format="MM/dd/yyyy"
-                placeholder="MM/dd/yyyy"
                 name={name}
                 value={value}
                 onChange={date => onChange(convertEventParameter(name, date))}
+                {...(error) && {error: true, helperText: error}}
             />
         </MuiPickersUtilsProvider>
     )

@@ -1,21 +1,35 @@
 import { TextField } from '@material-ui/core'
+import { Autocomplete } from '@material-ui/lab'
 import React from 'react'
-import SelectInput from './SelectInput'
+// import SelectInput from './SelectInput'
 import { stateOptions } from './States'
 
+const convertEventParameter = (name, value) => ({
+    target: {
+        name, value
+    }
+})
+
 export default function StateSelectInput(props) {
+    const {name, value, onChange} = props; 
     return (
-        <SelectInput
+        <Autocomplete
+            style={{width: 300}}
             options={stateOptions}
-            getOptionLabel={(option) => option.name + ' (' + option.abbreviation + ')'}
+            autoHighlight
+            getOptionSelected={(option, value) => option.name === value.name}
+            getOptionLabel={(option) => option.name + ' (' + option.abbreviation + ')' || ""}
             renderInput={(params) => 
                 <TextField
                     {...params}
                     label="Choose a state/province"
                     variant="outlined"
-                />
-            }
-            style={{ width: 300 }}
+                    inputProps={{
+                        ...params.inputProps,
+                        autoComplete: 'new-password', // disable autocomplete and autofill
+                    }}
+                />}
+            onChange={(e, v) => onChange(convertEventParameter(name, v ? v.name : ''))}
         />
     )
 }
