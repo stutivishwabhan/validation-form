@@ -8,6 +8,7 @@ export default function RadioInput(props) {
         <FormControl>
             <FormLabel>{label}</FormLabel>
             <RadioGroup row
+                label={label}
                 name={name}
                 value={value}
                 onChange={onChange}

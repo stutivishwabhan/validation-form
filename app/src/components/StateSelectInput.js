@@ -1,11 +1,11 @@
 import { TextField } from '@material-ui/core'
 import { Autocomplete } from '@material-ui/lab'
 import React from 'react'
-import { convertEventParameter } from '../utils';
+import { convertEventParameter } from '../helpers';
 import { stateOptions } from './States'
 
 export default function StateSelectInput(props) {
-    const {name, value, onChange} = props; 
+    const {name, value, onChange, error} = props; 
     return (
         <Autocomplete
             style={{width: 300}}
@@ -18,6 +18,7 @@ export default function StateSelectInput(props) {
                     {...params}
                     label="Choose a state/province"
                     variant="outlined"
+                    {...(error) && {error: true, helperText: error}}
                     inputProps={{
                         ...params.inputProps,
                         autoComplete: 'new-password', // disable autocomplete and autofill

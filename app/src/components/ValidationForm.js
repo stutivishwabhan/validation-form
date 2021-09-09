@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import { useState } from 'react'; 
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TextInput from './TextInput';
@@ -7,6 +7,7 @@ import CountrySelectInput from './CountrySelectInput';
 import StateSelectInput from './StateSelectInput';
 import DateInput from './DateInput';
 import SubmitButton from './SubmitButton';
+import { checkIsFieldValid } from '../helpers';
 
 const initialFormValues = {
     firstName: '', 
@@ -54,21 +55,12 @@ const ValidationForm = () => {
     const [errors, setErrors] = useState({}); 
     const classes = useStyles(); 
 
-    const areFieldsValid = () => {
-        const emailRegex = /.+@.+\..+/;
-        const numericRegex = /^(0|[1-9][0-9]*)$/; 
+    const areFieldsValid = (fieldValues = values) => {
         let validationState = {}; 
-        validationState.firstName = values.firstName.length !== 0 ? "" : "This field is required"; 
-        validationState.lastName = values.lastName.length !== 0 ? "" : "This field is required"; 
-        validationState.emailAddress = values.emailAddress.length !== 0 ? ((emailRegex).test(values.emailAddress) ? "" : "Email is invalid") : "This field is required"; 
-        validationState.streetAddress = values.streetAddress.length !== 0 ? "" : "This field is required"; 
-        validationState.city = values.city.length !== 0 ? "" : "This field is required"; 
-        validationState.country = values.country.length !== 0 ? "" : "This field is required"; 
-        validationState.zip = values.zip ? "" : "This field is required"; 
-        validationState.phoneNumber = values.phoneNumber.length !== 0 ? (values.phoneNumber.length > 9 && (numericRegex.test(values.phoneNumber)) ? "" : "Phone number must be at least 10 digits") : "This field is required";
-        validationState.dateOfBirth = values.dateOfBirth ? "" : "This field is required"; 
+        Object.keys(fieldValues).map((field) => (
+            validationState[field] = checkIsFieldValid(field, fieldValues[field])
+        ))
         setErrors({...validationState}); 
-        console.log(validationState); 
         return Object.values(validationState).every(i => i === "");
     }
 
@@ -141,7 +133,7 @@ const ValidationForm = () => {
                 name="state"
                 value={values.state}
                 onChange={handleInputChange}
-                /* no error for state since it's not a required field */
+                error={errors.state}
             />
         </Grid>
         <Grid item xs={12} className={classes.multipleItems}>
@@ -180,6 +172,7 @@ const ValidationForm = () => {
         </Grid>
         <Grid item xs={12}>
             <RadioInput 
+                label="Gender"
                 name="gender"
                 value={values.gender}
                 onChange={handleInputChange}

@@ -1,7 +1,7 @@
 import React from 'react'
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
-import { convertEventParameter } from '../utils';
+import { convertEventParameter } from '../helpers.js';
 
 export default function DateInput(props) {
     const {label, name, value, onChange, error} = props; 
